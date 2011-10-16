@@ -45,6 +45,7 @@ module Amzwish
           fixture.get_page("34VGL4IX1RMYO", 1).should =~ /Chris Tinning/
         end
         example "get wishlist" do
+          puts ">" + fixture.find_for("chris.tinning@gmail.com").to_s + "<"
           fixture.find_for("chris.tinning@gmail.com")[0].list_id.should == "34VGL4IX1RMYO" 
         end
       end unless PREVENT_WEB_REQUESTS                          
