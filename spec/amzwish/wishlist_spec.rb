@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'spec_helper'
 require 'open-uri'
 
@@ -59,15 +60,25 @@ module Amzwish
       let(:mock_wrapper){ mock_website_wrapper(%w{ multipage-page1.html multipage-page2.html multipage-page3.html multipage-page4.html}) }
       let(:fixture){ Wishlist.new("address@email.com", "WISHLIST-ID", mock_wrapper) }
       it "returns a list of books" do
-        fixture.books.size.should be > 0
+        books = fixture.books
+        books.size.should be > 0
+        books[0].title.should == "Sony MDR-NC60 High Quality Noise Cancelling Headphones"     
+        books[0].price.should == "£92.39"
+        books[2].price.should == nil      # this item has no listed price
       end
+      
+      it "should be sortable" do
+        # start = fixture.books[0]
+        # fixture.books.sort
+        # start.should_not == fixture.books[0]
+      end 
     end
     
     def mock_website_wrapper(html_files, wishlist_id = "WISHLIST-ID", email = "address@email.com") 
       mock_wrapper = mock(Services::WebsiteWrapper)
       html_files.each_with_index do |f, i|
         page_num = i+1
-        page = open(File.join(PROJECT_DIR, "samples","uk", f )).read
+        page = open(File.join(PROJECT_DIR, "samples","uk", f ), "r:UTF-8").read
         mock_wrapper.should_receive(:get_page).with( wishlist_id, page_num).and_return(page) 
       end
       mock_wrapper

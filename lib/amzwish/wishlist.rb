@@ -20,7 +20,7 @@ module Amzwish
     def books
       to_a
     end
-    
+   
     def each
        each_page{|p| p.books.each{|b| yield b}}
     end
@@ -41,6 +41,7 @@ module Amzwish
     class Page
       def initialize(html)
         @page = Nokogiri::HTML(html)
+        @page.encoding = 'utf-8'
       end
       
       def has_next?
@@ -52,7 +53,13 @@ module Amzwish
         @page.xpath('//tbody[@class="itemWrapper"]').collect do |e| 
           title = e.xpath('.//a[1]/text()').to_s
           asin = e.xpath("@name").to_s.split('.').last
-          Book.new( title, asin)
+          price = e.xpath('.//span[@class="price"]/strong/text()')
+          if price.empty?
+            price = nil
+          else
+            price = price.to_s.strip
+          end
+          Book.new(asin, title, price)
         end
       end
     end

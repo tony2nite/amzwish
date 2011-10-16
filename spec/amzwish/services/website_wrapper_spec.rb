@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'spec_helper'
 
 module Amzwish
@@ -44,12 +45,21 @@ module Amzwish
         example "get wishlist html" do
           fixture.get_page("34VGL4IX1RMYO", 1).should =~ /Chris Tinning/
         end
+        
         example "get wishlist" do
           wishlists = fixture.find_for("anthony@sunandair.com")
           wishlists.should be_kind_of(Array)
           wishlists.count.should > 0
           # wishlists[0].list_id.should == "34VGL4IX1RMYO" 
           wishlists[0].list_id.should == "24UTKOOHVQDNV" 
+        end
+
+        example "get book price" do
+          price = fixture.get_price("B004VS866M")
+          price.should == "£4.79"
+          
+          price = fixture.get_price("0571135390")
+          price.should == "£4.76"
         end
       end unless PREVENT_WEB_REQUESTS                          
     end
