@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "bin/amzwish",
      "lib/amzwish.rb",
      "lib/amzwish/book.rb",
+     "lib/amzwish/services.rb",
      "lib/amzwish/services/website_wrapper.rb",
      "lib/amzwish/wishlist.rb",
      "samples/create_key_sample.rb",
