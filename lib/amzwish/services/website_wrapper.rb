@@ -11,12 +11,21 @@ module Amzwish
 
       def find_for(email)
         resp = @rest_client.post(email)
-        # If a user has a single public wishlist then should get a redirect to it
         if (resp[:code] == 302)
+          # If a user has a single public wishlist then should get a redirect to it
           /(?:\?|&)id=(\w*)/ =~ resp[:headers][:location]
           wishlist_id = $~[1]
           [Wishlist.new(email, wishlist_id, self)]
+        elsif (resp[:code] == 200)
+          # We've got more than one searchable wish list for the "search by email"
+          ids = resp[:response].scan(/<a href="\/registry\/wishlist\/(\w+)\/.*">.*<\/a> Wish List/)
+          wishlists = []
+          ids.each { |id|
+            wishlists << Wishlist.new(email, id[0], self)
+          }
+          return wishlists
         else
+          # Deal with error?
           []
         end
       end
@@ -29,7 +38,7 @@ module Amzwish
     class RestClientWrapper
       def post(email)
         r = RestClient.post( WebsiteWrapper::FIND_WISHLIST_URL, "field-name" => email ) do |resp, req, result| 
-          {:code => resp.code, :headers=>resp.headers}
+          {:code => resp.code, :headers=>resp.headers, :response=>resp}
         end
       end
 

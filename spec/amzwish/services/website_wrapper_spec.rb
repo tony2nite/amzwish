@@ -12,7 +12,7 @@ module Amzwish
       describe "getting wishlist id" do
         describe "wishlist not found" do
           it "should return an empty array" do
-            mock_client.should_receive(:post).with("address@email.com").and_return({:code => 200})
+            mock_client.should_receive(:post).with("address@email.com").and_return({:code => 200, :response => ""})
             fixture.find_for("address@email.com").should == []
           end
         end
@@ -45,8 +45,11 @@ module Amzwish
           fixture.get_page("34VGL4IX1RMYO", 1).should =~ /Chris Tinning/
         end
         example "get wishlist" do
-          puts ">" + fixture.find_for("chris.tinning@gmail.com").to_s + "<"
-          fixture.find_for("chris.tinning@gmail.com")[0].list_id.should == "34VGL4IX1RMYO" 
+          wishlists = fixture.find_for("anthony@sunandair.com")
+          wishlists.should be_kind_of(Array)
+          wishlists.count.should > 0
+          # wishlists[0].list_id.should == "34VGL4IX1RMYO" 
+          wishlists[0].list_id.should == "24UTKOOHVQDNV" 
         end
       end unless PREVENT_WEB_REQUESTS                          
     end
