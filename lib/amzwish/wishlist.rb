@@ -18,12 +18,14 @@ module Amzwish
     end                 
     
     def books
+      # we're making a copy here
       to_a
     end
    
     def each
        each_page{|p| p.books.each{|b| yield b}}
     end
+    
     alias_method :each_book, :each
     
     private

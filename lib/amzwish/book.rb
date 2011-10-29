@@ -12,8 +12,8 @@ module Amzwish
     
     def sync
       b = @website.find_book_for(asin)
-      @price = b.price
       @title = b.title
+      @price = b.price
     end
     
     def ==(other)

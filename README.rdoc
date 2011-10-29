@@ -2,11 +2,21 @@
 
 This is project allows access to Amazon wishlists. The implementation at present is very limited. See bin/amzwish for the extent of the current implementation.
 
-TODO                                        
+== Running from IRB
+
+  wishlists = Amzwish::Wishlist.find('YOUR@EMAIL.COM')	# loads N wishlists
+  books = wishlists[0].books # lists all books for the first wishlist
+  books.each {|b| puts b.sync } # sync prices not found on summary page
+  books.sort! { |a,b| a.price <=> b.price }
+  books.each {|b| puts b.to_s } # iterate through books
+
+== TODO
+
 * Better error handling
 * Support people who have multiple wishlists
 * Wire in product api to provide further information about books
 * Support other locales
+
 
 == Note on Patches/Pull Requests
  

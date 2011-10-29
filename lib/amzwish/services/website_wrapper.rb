@@ -58,7 +58,8 @@ module Amzwish
 
       def get(wishlist_id, page)
         url = generate_url_for_wishlist(wishlist_id)
-        params = { :page => page, :_encoding => 'UTF8', :filter => '3', :sort=> 'date-added',
+        # params = { :page => page, :_encoding => 'UTF8', :filter => '3', :sort=> 'date-added',
+        params = { :page => page, :_encoding => 'UTF8', :sort=> 'date-added',
           :layout => 'compact', :reveal => 'unpurchased'}
         RestClient.get( url, :params => params ) do |resp, req, result|
           raise "could not find wishlist" unless resp.code == 200 

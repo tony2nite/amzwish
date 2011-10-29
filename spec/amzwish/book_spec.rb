@@ -31,6 +31,22 @@ module Amzwish
       end
     end
     
+    describe "collections" do
+      books = []
+      books << Book.new('0571135390')
+      books << Book.new('B004VS866M')
+      
+      it "syncs collections of books" do 
+        books[0].price.should == nil
+        books[1].price.should == nil
+        books.each { |b|
+          b.sync()
+        }
+        books[0].price.should_not == nil
+        books[1].price.should_not == nil
+      end
+    end
+    
     describe "sync with website data" do
       let(:mock_rest_service){ mock_rest_service_wrapper( %w{ single-book-item.html }, "0571135390") }
       let(:wrapper){ Services::WebsiteWrapper.new( mock_rest_service ) }

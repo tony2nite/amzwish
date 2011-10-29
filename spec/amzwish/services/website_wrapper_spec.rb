@@ -52,16 +52,23 @@ module Amzwish
           wishlists.count.should > 0
           # wishlists[0].list_id.should == "34VGL4IX1RMYO" 
           wishlists[0].list_id.should == "24UTKOOHVQDNV" 
+          wishlists[1].list_id.should == "1RDI3QRP45BTS"
         end
 
         example "get book find_book_for" do
           book = fixture.find_book_for("B004VS866M")
           book.asin.should == "B004VS866M"
-          book.price.should == 4.39
+          book.price.should > 0 
           book.title.should == "Life And Fate"
      
           book = fixture.find_book_for("0571135390")
-          book.price.should == 4.76 
+          book.price.should > 0
+
+          book = fixture.find_book_for("B005E87GLY")
+          book.price.should > 0
+
+          book = fixture.find_book_for("B003YMNVC0")
+          book.price.should_not be_nil
         end
       end unless PREVENT_WEB_REQUESTS                          
     end
