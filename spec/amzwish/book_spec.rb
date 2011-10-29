@@ -22,10 +22,35 @@ module Amzwish
           low = Book.new("789", "Title", 25)
           (low <=> fixture).should == -1
 
+          noprice = Book.new("13141516", "Title")
+          (noprice <=> fixture).should == 0           # not sure what correct behaviour should be here actuallys
+  
           same = Book.new("101112", "Title", 50)
           (same <=> fixture).should == 0
         end
       end
+    end
+    
+    describe "sync with website data" do
+      let(:mock_rest_service){ mock_rest_service_wrapper( %w{ single-book-item.html }, "0571135390") }
+      let(:wrapper){ Services::WebsiteWrapper.new( mock_rest_service ) }
+      
+      it "returns book detail" do
+        book = Book.new( "0571135390", "", nil, wrapper )
+        book.sync()
+        book.title.should == "The Unbearable Lightness of Being"     
+        book.price.should == 4.76
+        book.asin.should == "0571135390"
+      end
+    end
+    
+   def mock_rest_service_wrapper (html_files, asin = "ASIN") 
+      mock_rest_service = mock(Services::RestClientWrapper)
+      html_files.each_with_index do |f, i|
+        page = open(File.join(PROJECT_DIR, "samples","uk", f ), "r:UTF-8").read
+        mock_rest_service.should_receive(:get_book).with( asin ).and_return(page) 
+      end
+      mock_rest_service
     end
   end           
 end

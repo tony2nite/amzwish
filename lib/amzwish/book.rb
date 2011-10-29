@@ -11,7 +11,7 @@ module Amzwish
     end
     
     def sync
-      b = @website.get_price(asin)
+      b = @website.find_book_for(asin)
       @price = b.price
       @title = b.title
     end
