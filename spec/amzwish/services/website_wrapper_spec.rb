@@ -54,12 +54,14 @@ module Amzwish
           wishlists[0].list_id.should == "24UTKOOHVQDNV" 
         end
 
-        example "get book price" do
-          price = fixture.get_price("B004VS866M")
-          price.should == "£4.79"
-          
-          price = fixture.get_price("0571135390")
-          price.should == "£4.76"
+        example "get book find_book_for" do
+          book = fixture.find_book_for("B004VS866M")
+          book.asin.should == "B004VS866M"
+          book.price.should == 4.39
+          book.title.should == "Life And Fate"
+     
+          book = fixture.find_book_for("0571135390")
+          book.price.should == 4.76 
         end
       end unless PREVENT_WEB_REQUESTS                          
     end

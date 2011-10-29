@@ -63,7 +63,7 @@ module Amzwish
         books = fixture.books
         books.size.should be > 0
         books[0].title.should == "Sony MDR-NC60 High Quality Noise Cancelling Headphones"     
-        books[0].price.should == "£92.39"
+        books[0].price.should == 92.39
         books[2].price.should == nil      # this item has no listed price
       end
       

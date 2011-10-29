@@ -58,6 +58,7 @@ module Amzwish
             price = nil
           else
             price = price.to_s.strip
+            price = price.scan(/[\d\.]+/)[0].to_f
           end
           Book.new(asin, title, price)
         end

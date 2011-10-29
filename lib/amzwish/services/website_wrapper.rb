@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'rest_client'
 require 'nokogiri'
 
@@ -37,14 +39,13 @@ module Amzwish
         @rest_client.get(wishlist_id, page)
       end
       
-      def get_price(asin)
+      def find_book_for(asin)
         book_html = Nokogiri::HTML(@rest_client.get_book(asin))
         book_html.encoding = 'utf-8'
-        # title = book_html.xpath('.//span[@id="btAsinTitle"]/text()').to_s.strip!
-        # price = book_html.xpath('.//td/b[@class="priceLarge"]/text()').to_s.strip!
-        # book = Book.new(asin, title, price)
-        # book.price = price
-        book_html.xpath('.//b[@class="priceLarge"]/text()').to_s.strip
+        title = book_html.xpath('.//span[@id="btAsinTitle"]/text()').to_s.strip
+        price = book_html.xpath('.//div[@id="priceBlock"]/*//b[@class="priceLarge"]/text()').to_s.strip
+        price = price.scan(/[\d\.]+/)[0].to_f
+        book = Book.new(asin, title, price)
       end
     end
     
